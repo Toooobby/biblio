@@ -66,11 +66,53 @@ public class LibroService {
         //Agrupár Libro por año
         for(Libro libro : libros){
             int anio = libro.getFechaPublicacion();
-
-            
+            //Clave buscada entre el mapa, el valor se devuelve
+            //si la clave no existe en el mapa
+            long libroPorAnio = librosPorAnio.getOrDefault(anio,0L)+1;
+            librosPorAnio.put(anio,libroPorAnio);
         }
-        return null;
+        return librosPorAnio;
 
+    }
+
+    public Libro getLibroMasAntiguo(){
+        List<Libro> libros = libroRepository.getLibros();
+
+        if(libros.isEmpty()) return null;
+
+        Libro libroMasAntiguo = libros.get(0);
+
+        for(Libro libro : libros){
+            if(libro.getFechaPublicacion() < libroMasAntiguo.getFechaPublicacion()){
+            libroMasAntiguo = libro; 
+            }
+        }
+        
+        return libroMasAntiguo;
+    }
+    
+    public Libro getLibroMasNuevo(){
+        List<Libro> libros = libroRepository.getLibros();
+
+        if(libros.isEmpty()) return null;
+
+        Libro libroMasNuevo = libros.get(0);
+
+        for(Libro libro : libros){
+            if(libro.getFechaPublicacion() < libroMasNuevo.getFechaPublicacion()){
+            libroMasNuevo = libro; 
+            }
+        }
+        
+        return libroMasNuevo;
+    }
+
+    public List<Libro> listarLibrosOrdenadosPorAnio(){
+        
+        return libroRepository.getLibros()
+                        .stream()//Convierte la lista de libros en un Stream, que permite operaciones funcionales como filter, map 
+                        .sorted((libro1,libro2) -> Integer.compare(libro1.getFechaPublicacion(),libro2.getFechaPublicacion()))
+                        .toList();//Convierte el stream ordenandose de nuevo a una lista
     }
 
 }
