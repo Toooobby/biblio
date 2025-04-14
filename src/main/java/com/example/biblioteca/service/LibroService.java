@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class LibroService {
 
-    //@Autowired
+    @Autowired
     //Esto no posee autowired
     //Tiene dependencia de la clase que necesita
     private LibroRepository libroRepository;
